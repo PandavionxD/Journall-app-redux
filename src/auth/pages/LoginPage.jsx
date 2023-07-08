@@ -6,14 +6,14 @@ import { AuthLayout } from "../layout/AuthLayout";
 export const LoginPage = () => {
   return (
     <>
-      <AuthLayout title="Login">
+      <AuthLayout title="Ingresar">
         <form>
           <Grid container>
             <Grid item xs={12} mb={2}>
               <TextField
-                label="Correo"
+                label="Correo Electrónico"
                 type="email"
-                placeholder="correo@mail.com"
+                placeholder="nombre@mail.com"
                 fullWidth
               />
             </Grid>
