@@ -8,12 +8,13 @@ export const AuthLayout = ({ children, title = "" }) => {
         spacing={0}
         direction={"column"}
         alignItems={"center"}
-        justifyContent={"center"}
+        justifyContent="center"
         sx={{ minHeight: "100vh", backgroundColor: "primary.main", padding: 4 }}
       >
         <Grid
           item
           xs={3}
+          width={450}
           sx={{
             boxShadow: "0px 5px 5px rgba(0,0,0,.2)",
             backgroundColor: "white",
