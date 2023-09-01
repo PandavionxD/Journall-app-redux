@@ -2,59 +2,60 @@ import { Button, Grid, Link, TextField, Typography } from "@mui/material";
 import { AuthLayout } from "../layout/AuthLayout";
 import { Link as RouterLInk } from "react-router-dom";
 import { Formik } from "formik";
-import * as Yup from 'yup';
+import * as Yup from "yup";
 import { useDispatch, useSelector } from "react-redux";
 import { startAuthEmailAndPassword } from "../../store/auth/thunks";
 
 export const RegisterPage = () => {
+  const dispatch = useDispatch();
+  const { status, errorMessage } = useSelector((state) => state.auth);
 
-  const dispatch = useDispatch()
-  const {status,errorMessage} = useSelector(state => state.auth)
+  const onsubmit = (values, { setSubmitting, setErrors, resetForm }) => {
+    console.log("Enviando datos del formulario Formik");
+    const { name, password, email } = values;
+    dispatch(startAuthEmailAndPassword(email, password, name));
 
-  const onsubmit = (values,{setSubmitting, setErrors, resetForm })=>{
-    console.log('Enviando datos del formulario Formik')
-    const {name, password, email} = values
-    dispatch(startAuthEmailAndPassword(email, password, name))
-
-    if(status ==='not authenticated'){
+    if (status === "not authenticated") {
       if (errorMessage === "Firebase: Error (auth/email-already-in-use).") {
         return setErrors({ email: "Email en uso" });
       }
     }
-  }
+  };
 
-  const ValidationScheme =Yup.object().shape({
-    email:Yup.string().email('Email no valido').required('email requerido'),
-    password:Yup.string().trim().required('Contraseña requerida').min(6,'Mínimo 6 caracteres'),
-    name:Yup.string().trim().required('Nombre requerido'),
-  })
+  const ValidationScheme = Yup.object().shape({
+    email: Yup.string().email("Email no valido").required("email requerido"),
+    password: Yup.string()
+      .trim()
+      .required("Contraseña requerida")
+      .min(6, "Mínimo 6 caracteres"),
+    name: Yup.string().trim().required("Nombre requerido"),
+  });
 
   return (
     <AuthLayout title="Registro">
       <Formik
         initialValues={{
-          email:'',
-          password:'',
-          name:''
+          email: "",
+          password: "",
+          name: "",
         }}
         onSubmit={onsubmit}
         validationSchema={ValidationScheme}
       >
-        {(
-          {
-            values,
-            handleSubmit,
-            handleChange,
-            handleBlur,
-            touched,
-            errors,
-            isSubmitting
-          }
-        ) => (
-          <form  onSubmit={handleSubmit} >
+        {({
+          values,
+          handleSubmit,
+          handleChange,
+          handleBlur,
+          touched,
+          errors,
+          isSubmitting,
+        }) => (
+          <form onSubmit={handleSubmit} className="animate__animated animate__fadeIn animate__faster" >
             <Grid container spacing={2}>
               <Grid item xs={12}>
                 <TextField
+                  autoComplete="off"
                   label="Nombre Completo"
                   fullWidth
                   type="text"
@@ -64,11 +65,12 @@ export const RegisterPage = () => {
                   onChange={handleChange}
                   onBlur={handleBlur}
                   error={errors.name && touched.name}
-                  helperText={errors.name && touched.name && errors.name }
+                  helperText={errors.name && touched.name && errors.name}
                 ></TextField>
               </Grid>
               <Grid item xs={12}>
                 <TextField
+                  autoComplete="off"
                   type="email"
                   label="Correo Electrónico"
                   fullWidth
@@ -79,11 +81,12 @@ export const RegisterPage = () => {
                   onChange={handleChange}
                   onBlur={handleBlur}
                   error={errors.email && touched.email}
-                  helperText={errors.email && touched.email && errors.email }
+                  helperText={errors.email && touched.email && errors.email}
                 ></TextField>
               </Grid>
               <Grid item xs={12}>
                 <TextField
+                  autoComplete="off"
                   type="password"
                   label="Contraseña"
                   fullWidth
@@ -94,13 +97,20 @@ export const RegisterPage = () => {
                   onChange={handleChange}
                   onBlur={handleBlur}
                   error={errors.password && touched.password}
-                  helperText={errors.password && touched.password && errors.password }
+                  helperText={
+                    errors.password && touched.password && errors.password
+                  }
                 ></TextField>
               </Grid>
             </Grid>
             <Grid container sx={{ mb: 2, mt: 1 }}>
               <Grid item xs={12}>
-                <Button variant="contained" disabled={status ==='checking'} type="submit" fullWidth>
+                <Button
+                  variant="contained"
+                  disabled={status === "checking"}
+                  type="submit"
+                  fullWidth
+                >
                   Crear Cuenta
                 </Button>
               </Grid>

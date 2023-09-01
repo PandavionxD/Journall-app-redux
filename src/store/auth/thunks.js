@@ -1,40 +1,80 @@
-import { singInWithEmailAndPassword, singInWithGoogle } from "../../firebase/provider"
-import { chekinCredentials, login, logout } from "./authSlice"
+import {
+  logoutFirebase,
+  singInWithEmailAndPassword,
+  singInWithGoogle,
+  startLoginWithEmailAndPassword,
+} from "../../firebase/provider";
+import { chekinCredentials, login, logout } from "./authSlice";
 
-export const chekingAutentication = (email,password)=>{
-    return async(dispatch)=>{
-        dispatch(chekinCredentials())
+export const starAuthGoogle = () => {
+  return async (dispatch) => {
+    dispatch(chekinCredentials());
+    const res = await singInWithGoogle();
+    if (!res.ok) {
+      return dispatch(logout({ errorMessage: res.errorMessage }));
     }
-} 
+    dispatch(login(res));
+  };
+};
 
-export const starAuthGoogle = ()=>{
-   return async(dispatch)=>{
-    dispatch(chekinCredentials())
-    const res = await singInWithGoogle()
-    if(!res.ok){
-      return dispatch(logout(res.errorMessage))
+export const startAuthEmailAndPassword = (email, password, name) => {
+  return async (dispatch) => {
+    dispatch(chekinCredentials());
+    const res = await singInWithEmailAndPassword(email, password, name);
+    const { displayName, errorMessage, photoURL, uid, ok } = res;
+    if (!ok) {
+      return dispatch(
+        logout({
+          ok: false,
+          errorMessage,
+        })
+      );
     }
-    dispatch(login(res))
-   }
-}
+    dispatch(
+      login({
+        uid,
+        photoURL,
+        displayName,
+        email,
+        ok: true,
+      })
+    );
+  };
+};
 
-export const startAuthEmailAndPassword = (email,password,name)=>{
-  return async(dispatch)=>{
-    dispatch(chekinCredentials())
-    const res = await singInWithEmailAndPassword(email,password,name)
-    const {displayName,errorMessage,photoURL,uid,ok} = res
-    if(!ok){
-      return dispatch(logout({
-        ok:false,
-        errorMessage
-      }))
+export const LoginPasswordEmail = (email, password) => {
+  return async (dispatch) => {
+    dispatch(chekinCredentials());
+    const res = await startLoginWithEmailAndPassword(email, password);
+    const { displayName, errorMessage, photoURL, uid, ok } = res;
+    console.log(res);
+    if (!ok) {
+      return dispatch(
+        logout({
+          ok: false,
+          errorMessage,
+        })
+      );
     }
-    dispatch(login({
-      uid,
-      photoURL,
-      displayName,
-      email,
-      ok:true
-    }))
-  }
-}
+    dispatch(
+      login({
+        uid,
+        photoURL,
+        email,
+        displayName,
+        ok: true,
+      })
+    );
+  };
+};
+
+export const LogoutUser = () => {
+  return async (dispatch) => {
+    try {
+      await logoutFirebase();
+      dispatch(logout());
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};

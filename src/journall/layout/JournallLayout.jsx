@@ -7,7 +7,7 @@ const withComponent = 240
 export const JournallLayout = ({children}) => {
     
   return (
-    <Box sx={{ display: "flex" }}>
+    <Box sx={{ display: "flex" }} className="animate__animated animate__fadeIn animate__faster"  >
       {/* NAVBAR */}
         <NavBar withComponent={withComponent}  />
       {/* SIDEBAR */}
