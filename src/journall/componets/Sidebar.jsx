@@ -3,21 +3,25 @@ import {
   Box,
   Divider,
   Drawer,
-  Grid,
   List,
-  ListItem,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
   Toolbar,
   Typography,
 } from "@mui/material";
 import { useSelector } from "react-redux";
+import { ListItems } from "./ListItems";
+import { useEffect } from "react";
 
 export const Sidebar = ({ withComponent = 240 }) => {
 
   const {displayName} = useSelector(state=>state.auth)
+  const {notes} = useSelector(state=>state.journall)
 
+
+  // useEffect(() => {
+
+  // }, [notes])
+  
+  
   return (
     <Box
       component="nav"
@@ -41,31 +45,8 @@ export const Sidebar = ({ withComponent = 240 }) => {
         </Toolbar>
         <Divider />
         <List>
-          {[
-            "Enero",
-            "Febrero",
-            "Marzo",
-            "Abril",
-            "Junio",
-            "Julio",
-            "Agosto",
-            "Setiembre",
-            "Octubre",
-            "Noviembre",
-            "Diciembre",
-          ].map((text) => (
-            <ListItem key={text} disablePadding >
-              <ListItemButton>
-                <ListItemIcon>
-                  <TurnedInNot/>
-                </ListItemIcon>
-                <Grid container >
-                <ListItemText primary={text}/>
-                <ListItemText secondary={'Lorem ipsum dolor sit amet.'}/>
-                
-                </Grid>
-              </ListItemButton>
-            </ListItem>
+          {notes.map((note) => (
+            <ListItems  key={note.id} {...note}   />
           ))}
         </List>
       </Drawer>

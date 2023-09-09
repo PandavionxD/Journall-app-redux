@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 export const useForm = ( initialForm = {}, formValidations={} ) => {
   
@@ -11,6 +11,11 @@ export const useForm = ( initialForm = {}, formValidations={} ) => {
             [ name ]: value
         });
     }
+
+    useEffect(() => {
+      setFormState(initialForm)
+    }, [initialForm])
+    
 
     const onResetForm = () => {
         setFormState( initialForm );

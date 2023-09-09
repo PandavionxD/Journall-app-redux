@@ -4,6 +4,7 @@ import {
   singInWithGoogle,
   startLoginWithEmailAndPassword,
 } from "../../firebase/provider";
+import { clearNotesLogout } from "../journall/journallSlice";
 import { chekinCredentials, login, logout } from "./authSlice";
 
 export const starAuthGoogle = () => {
@@ -73,6 +74,7 @@ export const LogoutUser = () => {
     try {
       await logoutFirebase();
       dispatch(logout());
+      dispatch(clearNotesLogout())
     } catch (error) {
       console.log(error);
     }

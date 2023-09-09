@@ -8,7 +8,6 @@ export const NavBar = ({withComponent}) => {
     const dispatch = useDispatch()
 
     const logoutUser = ()=>{
-        console.log('Logout user')
         dispatch(LogoutUser())
     }
 

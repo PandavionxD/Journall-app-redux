@@ -20,9 +20,7 @@ export const AppRouter = () => {
           )}
           <Route path="/*" element={<Navigate to='auth/login' />} />
     </Routes>
-    {/* <Routes>
-          <Route path="/*" element={ <Navigate to='auth/register' /> }  />
-    </Routes> */}
+
           </>
   );
 };
